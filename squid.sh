@@ -19,7 +19,9 @@ mkdir -p $conf_gen
 
 expand_conf $confdir $conf_gen
 
+chown -R squid:squid $cachedir
 squid -N -z
 squid
 
 tail -f $logdir/cache.log
+
