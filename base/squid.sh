@@ -11,6 +11,14 @@ export vardir logdir confdir cachedir
 touch $logdir/cache.log
 chown squid:squid $logdir/cache.log
 
+for f in `ls $rootdir/etc/squid/start.d`  ; do
+  fn=$rootdir/etc/squid/start.d/$f
+  if [ -x $fn ] ; then
+     eval $fn
+  else
+     sh $fn
+  fi 
+done
 
 if ! [ -d $conf_gen ] ; then
   rm -rf $conf_gen
