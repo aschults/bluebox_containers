@@ -3,10 +3,11 @@ set -e
 
 vardir=$rootdir/var/spool/squid
 logdir=$rootdir/var/log/squid
+etcdir=$rootdir/etc/squid
 confdir=$rootdir/etc/squid/conf.d
 cachedir=$vardir/cache
 conf_gen=$vardir/conf_generated
-export vardir logdir confdir cachedir
+export vardir logdir confdir cachedir etcdir
 
 touch $logdir/cache.log
 chown squid:squid $logdir/cache.log
