@@ -12,6 +12,8 @@ if ! [ -f $dir/bump.crt ] ; then
   openssl req -nodes -newkey rsa:2048 -keyout $dir/bump.key -out $dir/bump.csr -subj "$certsubj"
   openssl x509 -req -extfile $etcdir/ssl_v3.ext -days 20000 -in $dir/bump.csr -signkey $dir/bump.key -out $dir/bump.crt 
 fi
+chmod a+r $dir/bump.crt
+
 
 mkdir $vardir/cacerts-gen
 mkdir -p $vardir/cacerts-gen
@@ -30,3 +32,4 @@ for f in `ls $dir/cacerts` ; do
 done
 
 chown -R squid:squid $vardir/cacerts-gen
+

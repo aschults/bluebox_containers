@@ -1,0 +1,26 @@
+{
+   "kind":"Service",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"web-proxy",
+      "labels":{
+         "app":"web-proxy"
+      }
+   },
+   "spec":{
+      "ports": [
+         {
+           "port":3128,
+           "targetPort":"proxy"
+         }
+      ],
+      "selector":{
+         "app":"web-proxy"
+      },
+      "type": "LoadBalancer",
+      "externalIPs" : [
+          "192.168.2.1"
+      ]
+
+   }
+}

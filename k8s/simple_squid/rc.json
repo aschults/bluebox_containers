@@ -1,82 +1,4 @@
 {
-   "kind":"PersistentVolume",
-   "apiVersion":"v1",
-   "metadata":{
-      "name":"squid-cache-disk",
-      "labels":{
-         "app":"web-proxy",
-         "pkg":"squid"
-      }
-   },
-   "spec":{
-      "capacity":{
-         "storage":"500Mi"
-      },
-      "accessModes":["ReadWriteMany"],
-      "hostPath":{
-         "path":"/var/tmp/squiddisk-cache"
-      }
-   }
-}
-{
-   "kind":"PersistentVolumeClaim",
-   "apiVersion":"v1",
-   "metadata":{
-      "name":"squid-disk-claim-cache",
-      "labels":{
-         "pkg":"squid"
-      }
-   },
-   "spec": {
-      "resources":{
-         "requests": {
-            "storage":"500Mi"
-         }
-      },
-      "accessModes":["ReadWriteMany"],
-      "volumeName":"squid-cache-disk"
-   }
-}
-{
-   "kind":"PersistentVolume",
-   "apiVersion":"v1",
-   "metadata":{
-      "name":"squid-ssl-disk",
-      "labels":{
-         "app":"web-proxy",
-         "pkg":"squid"
-      }
-   },
-   "spec":{
-      "capacity":{
-         "storage":"500Mi"
-      },
-      "accessModes":["ReadWriteMany"],
-      "hostPath":{
-         "path":"/var/tmp/squiddisk-ssl"
-      }
-   }
-}
-{
-   "kind":"PersistentVolumeClaim",
-   "apiVersion":"v1",
-   "metadata":{
-      "name":"squid-disk-claim-ssl",
-      "labels":{
-         "pkg":"squid"
-      }
-   },
-   "spec": {
-      "resources":{
-         "requests": {
-            "storage":"500Mi"
-         }
-      },
-      "accessModes":["ReadWriteMany"],
-      "volumeName":"squid-ssl-disk"
-   }
-}
-{
    "kind":"ReplicationController",
    "apiVersion":"v1",
    "metadata":{
@@ -130,7 +52,16 @@
                         "mountPath":"/var/spool/squid/ssl",
                         "name":"sqdisk-ssl"
                      }
-                  ]
+                  ],
+                  "livenessProbe": {
+                     "exec": {
+                        "command": [
+                           "/bin/sh",	
+                           "/liveness_check.sh"
+                        ],
+                     "initialDelaySeconds": 30,
+                     "timeoutSeconds": 1
+                  } 
                }
             ],
             "volumes":[
@@ -149,31 +80,5 @@
             ]
          }
       }
-   }
-}
-{
-   "kind":"Service",
-   "apiVersion":"v1",
-   "metadata":{
-      "name":"web-proxy",
-      "labels":{
-         "app":"web-proxy"
-      }
-   },
-   "spec":{
-      "ports": [
-         {
-           "port":3128,
-           "targetPort":"proxy"
-         }
-      ],
-      "selector":{
-         "app":"web-proxy"
-      },
-      "type": "LoadBalancer",
-      "externalIPs" : [
-          "192.168.2.1"
-      ]
-
    }
 }
