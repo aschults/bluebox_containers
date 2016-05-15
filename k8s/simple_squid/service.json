@@ -8,6 +8,7 @@
       }
    },
    "spec":{
+      "sessionAffinity":"ClientIP",
       "ports": [
          {
            "port":3128,
