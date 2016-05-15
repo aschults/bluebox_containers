@@ -26,4 +26,4 @@ x$d/a.confx"
   rm -rf $d
 }
 
-. ${SHUNIT_DIR:-shunit2-2.0.3}/src/shell/shunit2
+. ${SHUNIT_DIR:-../../shunit2-2.0.3}/src/shell/shunit2

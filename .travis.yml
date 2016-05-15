@@ -1,7 +1,8 @@
 language: bash
 
 before_script:
-    - cd base/test ; curl -L "http://downloads.sourceforge.net/shunit2/shunit2-2.0.3.tgz" | tar zx
+    - curl -L "http://downloads.sourceforge.net/shunit2/shunit2-2.0.3.tgz" | tar zx
 
 script:
-    - bash gen_test.sh
+    - (cd base/test ; bash gen_test.sh && bash collect_test.sh)
+    - (cd bind9/test ; bash gen_test.sh)

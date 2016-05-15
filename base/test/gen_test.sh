@@ -83,5 +83,4 @@ testFail2() {
   rm -rf $d $d2
 }
 
-. ${SHUNIT_DIR:-shunit2-2.0.3}/src/shell/shunit2
-. ${SHUNIT_DIR:-shunit2-2.0.3}/src/shell/shunit2
+. ${SHUNIT_DIR:-../../shunit2-2.0.3}/src/shell/shunit2
