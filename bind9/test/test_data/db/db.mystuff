@@ -1,0 +1,19 @@
+;|serial mytest.nowhere.
+;
+; BIND data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	bluebox.mytest.nowhere. root.mytest.nowhere. (
+			      2		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+mytest.nowhere.	IN	NS	bluebox.mytest.nowhere.
+mytest.nowhere.	IN	A	192.168.2.1
+
+
+bluebox	IN	A	192.168.2.1
+another IN     A       192.168.2.2
+number3 IN     A       192.168.2.3
