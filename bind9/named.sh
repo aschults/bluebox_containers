@@ -6,7 +6,9 @@ logdir=$rootdir/var/log/named
 etcdir=$rootdir/etc/bind
 bind_conf_gen=$vardir/conf_generated
 datadir=$vardir/data
-export vardir logdir etcdir datadir
+data_db=$vardir/db_active_data
+etc_db=$vardir/db_active
+export vardir logdir etcdir datadir data_db etc_db
 
 . db_gen_lib.sh
 
@@ -25,9 +27,15 @@ fi
 mkdir -p $bind_conf_gen
 mkdir $bind_conf_gen/options.d
 mkdir $bind_conf_gen/zones.d
+mkdir $bind_conf_gen/zones_data.d
 
-expand_conf $datadir/options.d $bind_conf_gen/options.d
-expand_conf $datadir/zones.d $bind_conf_gen/zones.d
+conf_failure_exit() {
+  error_msg "config file failed to generate:" "$@"
+}
+FAILED_FILE_HANDLER=conf_failure_exit
+expand_conf $etcdir/options.d $bind_conf_gen/options.d
+expand_conf $etcdir/zones.d $bind_conf_gen/zones.d
+expand_conf $datadir/zones.d $bind_conf_gen/zones_data.d
 
 optfn=$bind_conf_gen/named_gen.conf.options
 {
@@ -39,11 +47,29 @@ optfn=$bind_conf_gen/named_gen.conf.options
 optfn=$bind_conf_gen/named_gen.conf.zones
 {
   collect_files '  include "$fn";\n' $bind_conf_gen/zones.d
+  collect_files '  include "$fn";\n' $bind_conf_gen/zones_data.d
 } >$optfn
 
 mkdir -p /var/bind/cache
+update_dbs "$datadir/db" "$vardir/db_stage_data" "$data_db"
+update_dbs "$etcdir/db" "$vardir/db_stage" "$etc_db"
+FAILED_FILE_HANDLER=
+
+named-checkconf -z || error_msg "Config failure. Not starting named."
 named -g -c $etcdir/named.conf &
-while true ; to
-  update_dbs
+named_pid=$!
+while true ; do
   sleep 30
+  echo "updating DBs"
+  if [ -f "$vardir/needs_reload" ] ; then
+    rm "$vardir/needs_reload"
+  fi
+
+  update_dbs "$datadir/db" "$vardir/db_stage_data" "$data_db"
+  update_dbs "$etcdir/db" "$vardir/db_stage" "$etc_db"
+
+  if [ -f "$vardir/needs_reload" ] ; then
+    rm "$vardir/needs_reload"
+    kill -HUP $named_pid 
+  fi
 done

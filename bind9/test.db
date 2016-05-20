@@ -1,5 +1,0 @@
-@ 604800 IN SOA bluebox.test-domain.nowhere. root.test-domain.nowhere. 1 604800 86400 2419200 604800
-1.2 0 IN PTR bluebox.test-domain.nowhere.
-1.2 0 IN PTR test-domain.nowhere.
-2.2 0 IN PTR another.test-domain.nowhere.
-3.2 0 IN PTR third.test-domain.nowhere.

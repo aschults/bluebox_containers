@@ -17,6 +17,9 @@ testReverse() {
   res="`reverse_zone mytest.nowhere. 168.192.in-addr.arpa test_data/db/db.mystuff`"
   echo "$res"| grep -E "1\\.2 .* bluebox.*"
   assertTrue 0 $?
+
+  echo "$res"| grep -E " NS "
+  assertTrue 0 $?
 }
 
 testx() {

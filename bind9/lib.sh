@@ -5,8 +5,8 @@
 
 handle_failed_file() {
  if [ -n "${FAILED_FILE_CONTENT:-}" ] ; then
-    echo "Replacing $3 with '$FAILED_FILE_CONTENT'" >&2
-    echo "$FAILED_FILE_CONTENT" >"$3"
+    echo "Replacing $2 with '$FAILED_FILE_CONTENT'" >&2
+    echo "$FAILED_FILE_CONTENT" >"$2"
  fi
 }
 
@@ -14,6 +14,11 @@ debug_msg() {
   if [ -n "${DEBUG_LIB:-}" ] ; then
     echo "DEBUG:" "$@" >&2
   fi
+}
+
+error_msg() {
+  echo "ERROR:" "$@" >&2
+  exit 1
 }
 
 expand_conf() {
@@ -43,7 +48,11 @@ expand_conf() {
                          rv=$?
                          if [ $rv -gt 0 ] ; then
                            echo "failed to exec <$cmd>: $rv" >&2
-                           eval "$handle_failed_file" "$cmd" "$fn" "$conf_gen/$fn2" $rv
+                           eval "$handle_failed_file" "$fn" "$conf_gen/$fn2" $rv "$cmd" 
+                           rv2=$?
+                           if [ $rv2 -gt 0 ] ; then
+                             exit $rv2
+                           fi
                          fi
 			 ;;
 		  ${comment_str}\|*)
@@ -53,7 +62,11 @@ expand_conf() {
                          rv=$?
                          if [ $rv -gt 0 ] ; then
                            echo "failed to pipe $fn into exec <$cmd>: $rv" >&2
-                           eval "$handle_failed_file" "$cmd" "$fn" "$conf_gen/$fn2" $rv
+                           eval "$handle_failed_file" "$fn" "$conf_gen/$fn2" $rv "$cmd" 
+                           rv2=$?
+                           if [ $rv2 -gt 0 ] ; then
+                             exit $rv2
+                           fi
                          fi
 			 ;;
 		  *)
@@ -62,16 +75,25 @@ expand_conf() {
                          rv=$?
                          if [ $rv -gt 0 ] ; then
                            echo "failed to copy file $fn to $conf_gen/$fn2: $rv" >&2
-                           eval "$handle_failed_file" "$cmd" "$fn" "$conf_gen/$fn2" $rv
+                           eval "$handle_failed_file" "$fn" "$conf_gen/$fn2" $rv "cp" 
+                           rv2=$?
+                           if [ $rv2 -gt 0 ] ; then
+                             exit $rv2
+                           fi
                          fi
 			 ;;
 		esac
 	done
+        rv=$?
+        if [ $rv -gt 0 ] ; then
+          exit $rv
+        fi
         export SRC_FILE=
         export DST_FILE=
         export FILENAME=
   fi
   )
+  return $?
 }
 
 collect_files() {

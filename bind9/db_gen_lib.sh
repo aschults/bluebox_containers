@@ -17,32 +17,50 @@ serial() {
 
 
 sync_dirs() {
+  needs_reload="${needs_reload:-$vardir/needs_reload}"
   ls -1 $1 | while read fn ; do
     if [ -f $2/$fn ] ; then
       if grep -q "KEEP_FILE" $1/$fn ; then
         echo "KEEP_FILE for file $2/$fn"
-      elif diff -q $1/$fn $2/$fn ; then
+      elif ! diff -I " IN SOA " -q $1/$fn $2/$fn ; then
         cp $1/$fn $2/$fn
+        touch "$needs_reload"
       fi
     else 
       cp $1/$fn $2/$fn
+      touch "$needs_reload"
     fi
+
   done
 
   # removing files no longer existent
   ls -1 $2 | while read fn ; do
     if ! [ -f $1/$fn ] ; then
       rm $2/$fn
+      touch "$needs_reload"
     fi
   done
 }
 
 
 update_dbs() {
-  mkdir -p $vardir/db_active
-  export DB_ACTIVE_DIR=$vardir/db_active
-  export DB_STAGE_DIR=$vardir/db_stage
-  export DB_SRC_DIR=$datadir/db
+  local ts="$vardir/db_active.timestamp"
+  export DB_SRC_DIR="$1" 
+  if [ -z "$1" ] ; then
+    error_msg "update_dbs <src> <stage> <active>: no src given"
+    return 1
+  fi
+  export DB_STAGE_DIR="$2"
+  if [ -z "$2" ] ; then
+    error_msg "update_dbs <src> <stage> <active>: no stage given"
+    return 1
+  fi
+  export DB_ACTIVE_DIR="$3"
+  if [ -z "$3" ] ; then
+    error_msg "update_dbs <src> <stage> <active>: no active given"
+    return 1
+  fi
+  mkdir -p $DB_ACTIVE_DIR
 
   if [ -d $DB_STAGE_DIR ] ; then
     rm -rf $DB_STAGE_DIR
@@ -56,5 +74,6 @@ update_dbs() {
   export DB_ACTIVE_DIR=
   export DB_STAGE_DIR=
   export DB_SRC_DIR=
+  return $rv
 }
 

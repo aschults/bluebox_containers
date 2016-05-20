@@ -33,6 +33,7 @@ def reverse_zone(z,domain_out):
   """
   z2=dns.zone.Zone(dns.name.from_text(domain_out))
   z2.replace_rdataset("@",z.find_rdataset(z.origin,'SOA'))
+  z2.replace_rdataset(domain_out,z.find_rdataset(z.origin,'NS'))
 
   for k,o in z.items():
     for e in o:
