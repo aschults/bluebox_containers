@@ -41,7 +41,7 @@ expand_conf() {
 
                 debug_msg bang: "$bang"
 		case "$bang" in
-		  ${comment_str}\!*)
+		  \#\!*|${comment_str}\!*)
 			 local cmd="${bang#${comment_str}\!}"
                          debug_msg about to eval "$cmd '$fn'"
 			 eval "$cmd '$fn'" >"$conf_gen/$fn2"

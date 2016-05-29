@@ -1,0 +1,23 @@
+#! /bin/sh
+
+if [ -z $BLACKHOLE_IP ] ; then 
+  # Avoid bind faling to read --> Just substitute with localhost
+  BLACKHOLE_IP=127.0.0.1
+fi
+
+cat <<EOF
+; This zone will redirect all requests back to the blackhole itself.
+
+\$TTL    86400   ; one day
+
+@       IN      SOA     root.nowhere. root.nowhere. (
+                          1
+                          28800   ; refresh  8 hours
+                          7200    ; retry    2 hours
+                          864000  ; expire  10 days
+                          86400 ) ; min ttl  1 day
+        IN          NS      bluebox.nowhere.
+
+
+*               IN      A       $BLACKHOLE_IP
+EOF

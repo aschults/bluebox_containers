@@ -18,6 +18,9 @@ serial() {
 
 sync_dirs() {
   needs_reload="${needs_reload:-$vardir/needs_reload}"
+  if ! [ -d "$2" ] ; then
+    mkdir -p "$2"
+  fi
   ls -1 $1 | while read fn ; do
     if [ -f $2/$fn ] ; then
       if grep -q "KEEP_FILE" $1/$fn ; then
@@ -67,7 +70,7 @@ update_dbs() {
   fi
   mkdir $DB_STAGE_DIR
 
-  COMMENT_STR=";" FAILED_FILE_CONTENT="KEEP_FILE" expand_conf $DB_SRC_DIR $DB_STAGE_DIR
+  FAILED_FILE_CONTENT="KEEP_FILE" expand_conf $DB_SRC_DIR $DB_STAGE_DIR
 
   sync_dirs $DB_STAGE_DIR $DB_ACTIVE_DIR
 
