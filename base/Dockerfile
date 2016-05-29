@@ -1,5 +1,5 @@
 FROM alpine
-RUN sed -i -e 's/v3\.[0-9][0-9]*/edge/g' /etc/apk/repositories
+#RUN sed -i -e 's/v3\.[0-9][0-9]*/edge/g' /etc/apk/repositories
 RUN apk update
 RUN apk add squid gettext openssl ca-certificates lighttpd curl
 RUN update-ca-certificates
