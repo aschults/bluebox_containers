@@ -1,0 +1,33 @@
+{
+   "kind":"Service",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"bhdns",
+      "labels":{
+         "app":"bhdns"
+      }
+   },
+   "spec":{
+      "sessionAffinity":"ClientIP",
+      "ports": [
+         {
+           "port":53,
+           "targetPort":"bhdns",
+           "protocol":"UDP"
+         },
+         {
+           "port":53,
+           "targetPort":"bhdns-tcp",
+           "protocol":"TCP"
+         }
+      ],
+      "selector":{
+         "app":"bhdns"
+      },
+      "type": "LoadBalancer",
+      "externalIPs" : [
+          "192.168.2.254"
+      ]
+
+   }
+}

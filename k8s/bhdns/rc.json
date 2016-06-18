@@ -1,0 +1,77 @@
+{
+   "kind":"ReplicationController",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"bhdns",
+      "labels":{
+         "app":"bhdns",
+         "pkg":"bhdns"
+      }
+   },
+   "spec":{
+      "replicas":2,
+      "selector":{
+         "app":"bhdns",
+         "pkg":"bhdns"
+      },
+      "template":{
+         "metadata":{
+            "labels":{
+               "app":"bhdns",
+               "pkg":"bhdns"
+            }
+         },
+         "spec":{
+            "containers":[
+               {
+                  "name":"bhdns",
+                  "image":"aschults/bluebox_squid:bind_bhdns_latest",
+                  "imagePullPolicy":"Always",
+                  "env":[
+                     {
+                         "name":"disk_cache_size",
+                         "value":"500"
+                     }
+                  ],
+                  "ports":[
+                     {
+                        "name":"bhdns",
+                        "containerPort":53,
+                        "protocol":"UDP"
+                     },
+                     {
+                        "name":"bhdns-tcp",
+                        "containerPort":53,
+                        "protocol":"TCP"
+                     }
+                  ],
+                  "volumeMounts": [
+                     {
+                        "mountPath":"/var/bind/data",
+                        "name":"bhdns-data"
+                     }
+                  ],
+                  "livenessProbe": {
+                     "exec": {
+                        "command": [
+                           "/bin/sh",	
+                           "/liveness_check.sh"
+                        ]
+                     },
+                     "initialDelaySeconds": 30,
+                     "timeoutSeconds": 1
+                  } 
+               }
+            ],
+            "volumes":[
+               {
+                 "name":"bhdns-data",
+                 "persistentVolumeClaim": {
+                    "claimName":"bhdns-data-claim"
+                 }
+               }
+            ]
+         }
+      }
+   }
+}
