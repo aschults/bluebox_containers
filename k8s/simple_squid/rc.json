@@ -29,6 +29,14 @@
                   "imagePullPolicy":"Always",
                   "env":[
                      {
+                         "name":"append_domain",
+                         "value":"schultschik.local."
+                     },
+                     {
+                         "name":"dns_svc",
+                         "value":"BHDNS"
+                     },
+                     {
                          "name":"disk_cache_size",
                          "value":"500"
                      },
