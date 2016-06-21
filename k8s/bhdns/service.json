@@ -8,23 +8,25 @@
       }
    },
    "spec":{
-      "sessionAffinity":"ClientIP",
       "ports": [
          {
            "port":53,
            "targetPort":"bhdns",
-           "protocol":"UDP"
+           "protocol":"UDP",
+           "name":"bhdns"
          },
          {
            "port":53,
            "targetPort":"bhdns-tcp",
-           "protocol":"TCP"
+           "protocol":"TCP",
+           "name":"bhdns-tcp"
          }
       ],
       "selector":{
          "app":"bhdns"
       },
-      "type": "LoadBalancer",
+      "type": "ClusterIP",
+      "clusterIP": "10.0.0.12",
       "externalIPs" : [
           "192.168.2.254"
       ]
