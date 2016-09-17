@@ -29,6 +29,10 @@
                   "imagePullPolicy":"Always",
                   "env":[
                      {
+                         "name":"transparent",
+                         "value":"1"
+                     },
+                     {
                          "name":"redirect_base",
                          "value":"http://catchall-httpd.default.svc.cluster.local"
                      },

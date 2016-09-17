@@ -21,7 +21,7 @@
       "type": "ClusterIP",
       "clusterIP":"10.0.11.1",
       "externalIPs" : [
-          "192.168.2.254"
+          "192.168.2.252"
       ]
 
    }
