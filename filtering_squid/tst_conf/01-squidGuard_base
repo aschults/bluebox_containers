@@ -1,0 +1,38 @@
+# TIME RULES:
+# abbrev for weekdays: 
+# s = sun, m = mon, t =tue, w = wed, h = thu, f = fri, a = sat
+
+time workhours {
+	weekly mtwhf 08:00 - 16:30
+	date *-*-01  08:00 - 16:30
+}
+
+#
+# SOURCE ADDRESSES:
+#
+
+src open {
+	user		open
+}
+
+src foo-clients {
+	ip		172.16.2.32-172.16.2.100 172.16.2.100 172.16.2.200
+}
+
+src bar-clients {
+	ip		172.16.4.0/26
+}
+
+#
+# DESTINATION CLASSES:
+#
+# [see also in file dest-snippet.txt]
+
+#dest adult {
+#	domainlist	BL/adult/domains
+#	urllist		BL/adult/urls
+#	expressionlist	BL/adult/expressions
+#	redirect http://admin.foo.bar.de/cgi-bin/blocked.cgi?clientaddr=%a&clientname=%n&clientuser=%i&clientgroup=%s&targetgroup=%t&url=%u
+#}
+
+########################################################################

@@ -29,8 +29,8 @@
                   "imagePullPolicy":"Always",
                   "env":[
                      {
-                         "name":"disk_cache_size",
-                         "value":"500"
+                         "name":"forwarders",
+                         "value":"194.246.118.118 212.25.28.55"
                      }
                   ],
                   "ports":[

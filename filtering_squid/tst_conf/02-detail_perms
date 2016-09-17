@@ -1,0 +1,17 @@
+#|envsubst
+#########################################################################
+
+#
+# ACL RULES:
+#
+acl {
+	open {
+		pass	!liveness !BL/adv !BL/costtraps !BL/gamble !BL/spyware !BL/tracker any
+		redirect $redirect_base/1x1.png
+	}
+
+	default {
+		pass  !liveness	 !BL/porn !BL/adv !BL/aggressive !BL/costtraps !BL/alcohol !BL/drugs !BL/gamble !BL/porn !BL/sex/education !BL/sex/lingerie !BL/spyware !BL/tracker !BL/violence any
+		redirect $redirect_base/1x1.png
+       }
+}

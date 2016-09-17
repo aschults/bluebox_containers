@@ -1,0 +1,51 @@
+{
+   "kind":"ReplicationController",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"catchall-httpd",
+      "labels":{
+         "app":"catchall_httpd",
+         "pkg":"catchall_httpd"
+      }
+   },
+   "spec":{
+      "replicas":2,
+      "selector":{
+         "app":"catchall_httpd",
+         "pkg":"catchall_httpd"
+      },
+      "template":{
+         "metadata":{
+            "labels":{
+               "app":"catchall_httpd",
+               "pkg":"catchall_httpd"
+            }
+         },
+         "spec":{
+            "containers":[
+               {
+                  "name":"catchall-httpd",
+                  "image":"aschults/bluebox_squid:catchall_httpd_latest",
+                  "imagePullPolicy":"Always",
+                  "ports":[
+                     {
+                        "name":"catchall-httpd",
+                        "containerPort":80,
+                        "protocol":"TCP"
+                     }
+                  ],
+                  "livenessProbe": {
+                     "httpGet": {
+                       "path": "/",
+                       "port": 80
+                     },
+                     "initialDelaySeconds": 15,
+                     "timeoutSeconds": 2,
+                     "periodSeconds": 10
+                  } 
+               }
+            ]
+         }
+      }
+   }
+}
