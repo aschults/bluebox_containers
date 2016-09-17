@@ -76,3 +76,42 @@
       "volumeName":"squid-ssl-disk"
    }
 }
+{
+   "kind":"PersistentVolume",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"squid-guard-disk",
+      "labels":{
+         "app":"web-proxy",
+         "pkg":"squid"
+      }
+   },
+   "spec":{
+      "capacity":{
+         "storage":"100Mi"
+      },
+      "accessModes":["ReadWriteMany"],
+      "hostPath":{
+         "path":"/etc/k8s/squidGuard/conf.d"
+      }
+   }
+}
+{
+   "kind":"PersistentVolumeClaim",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"squid-guard-claim",
+      "labels":{
+         "pkg":"squid"
+      }
+   },
+   "spec": {
+      "resources":{
+         "requests": {
+            "storage":"100Mi"
+         }
+      },
+      "accessModes":["ReadWriteMany"],
+      "volumeName":"squid-guard-disk"
+   }
+}

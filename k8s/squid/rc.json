@@ -25,16 +25,20 @@
             "containers":[
                {
                   "name":"squid",
-                  "image":"aschults/bluebox_squid:base_latest",
+                  "image":"aschults/bluebox_squid:filtering_squid_latest",
                   "imagePullPolicy":"Always",
                   "env":[
                      {
-                         "name":"append_domain",
-                         "value":"schultschik.local."
+                         "name":"redirect_base",
+                         "value":"http://catchall-httpd.default.svc.cluster.local"
                      },
                      {
-                         "name":"dns_svc",
-                         "value":"BHDNS"
+                         "name":"append_domain",
+                         "value":".schultschik.local"
+                     },
+                     {
+                         "name":"xxxxdns_nameservers",
+                         "value":"bhdns.default.svc.cluster.local"
                      },
                      {
                          "name":"disk_cache_size",
@@ -57,6 +61,10 @@
                         "name":"sqdisk-cache"
                      },
                      {
+                        "mountPath":"/var/lib/squidGuard/conf.d",
+                        "name":"sqdisk-guard"
+                     },
+                     {
                         "mountPath":"/var/spool/squid/ssl",
                         "name":"sqdisk-ssl"
                      }
@@ -65,11 +73,11 @@
                      "exec": {
                         "command": [
                            "/bin/sh",	
-                           "/liveness_check.sh"
+                           "/liveness_check_sg.sh"
                         ]
                      },
                      "initialDelaySeconds": 30,
-                     "timeoutSeconds": 1
+                     "timeoutSeconds": 2
                   } 
                }
             ],
@@ -78,6 +86,12 @@
                  "name":"sqdisk-cache",
                  "persistentVolumeClaim": {
                     "claimName":"squid-disk-claim-cache"
+                 }
+               },
+               {
+                 "name":"sqdisk-guard",
+                 "persistentVolumeClaim": {
+                    "claimName":"squid-guard-claim"
                  }
                },
                {
