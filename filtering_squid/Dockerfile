@@ -1,4 +1,5 @@
 FROM aschults/bluebox_squid:base_latest
+RUN apk update
 RUN apk add db perl perl-uri perl-libwww libgcc
 ENV SQUIDGUARD_VERSION=1.4
 COPY build.sh /
