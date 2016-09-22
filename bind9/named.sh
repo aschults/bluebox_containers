@@ -69,7 +69,11 @@ FAILED_FILE_HANDLER=conf_failure_exit
 gen_files
 FAILED_FILE_HANDLER=
 
-named-checkconf -z >/dev/null || error_msg "Config failure. Not starting named."
+if ! named-checkconf -z >/dev/null ; then
+  named-checkconfig -z || true
+  error_msg "Config failure. Not starting named."
+fi
+
 named -g -c $etcdir/named.conf &
 named_pid=$!
 while true ; do
