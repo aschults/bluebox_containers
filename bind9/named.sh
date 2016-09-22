@@ -70,7 +70,7 @@ gen_files
 FAILED_FILE_HANDLER=
 
 if ! named-checkconf -z >/dev/null ; then
-  named-checkconfig -z || true
+  named-checkconf -z || true
   error_msg "Config failure. Not starting named."
 fi
 
