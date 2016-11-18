@@ -1,0 +1,39 @@
+{
+   "kind":"PersistentVolume",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"ampache-www-config",
+      "labels":{
+         "app":"ampache",
+         "pkg":"ampache"
+      }
+   },
+   "spec":{
+      "capacity":{
+         "storage":"50Mi"
+      },
+      "accessModes":["ReadWriteMany"],
+      "hostPath":{
+         "path":"/etc/k8s/ampache-www-config"
+      }
+   }
+}
+{
+   "kind":"PersistentVolumeClaim",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"ampache-www-config-claim",
+      "labels":{
+         "pkg":"ampache"
+      }
+   },
+   "spec": {
+      "resources":{
+         "requests": {
+            "storage":"50Mi"
+         }
+      },
+      "accessModes":["ReadWriteMany"],
+      "volumeName":"ampache-www-config"
+   }
+}

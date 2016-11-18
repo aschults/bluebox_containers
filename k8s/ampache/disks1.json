@@ -1,0 +1,39 @@
+{
+   "kind":"PersistentVolume",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"ampache-media",
+      "labels":{
+         "app":"ampache",
+         "pkg":"ampache"
+      }
+   },
+   "spec":{
+      "capacity":{
+         "storage":"5000Mi"
+      },
+      "accessModes":["ReadOnlyMany"],
+      "hostPath":{
+         "path":"/shared/Multimedia"
+      }
+   }
+}
+{
+   "kind":"PersistentVolumeClaim",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"ampache-media-claim",
+      "labels":{
+         "pkg":"ampache"
+      }
+   },
+   "spec": {
+      "resources":{
+         "requests": {
+            "storage":"5000Mi"
+         }
+      },
+      "accessModes":["ReadOnlyMany"],
+      "volumeName":"ampache-media"
+   }
+}

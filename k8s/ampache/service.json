@@ -1,0 +1,27 @@
+{
+   "kind":"Service",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"ampache-httpd",
+      "labels":{
+         "app":"ampache-httpd"
+      }
+   },
+   "spec":{
+      "ports": [
+         {
+           "port":80,
+           "protocol":"TCP",
+           "name":"ampache-httpd"
+         }
+      ],
+      "selector":{
+         "app":"ampache"
+      },
+      "type": "ClusterIP",
+      "externalIPs" : [
+          "192.168.2.254"
+      ]
+
+   }
+}

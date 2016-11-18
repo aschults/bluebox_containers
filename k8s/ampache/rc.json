@@ -1,0 +1,98 @@
+{
+   "kind":"ReplicationController",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"ampache",
+      "labels":{
+         "app":"ampache",
+         "pkg":"ampache"
+      }
+   },
+   "spec":{
+      "replicas":1,
+      "selector":{
+         "app":"ampache",
+         "pkg":"ampache"
+      },
+      "template":{
+         "metadata":{
+            "labels":{
+               "app":"ampache",
+               "pkg":"ampache"
+            }
+         },
+         "spec":{
+            "containers":[
+               {
+                  "name":"ampache",
+                  "image":"ampache/ampache",
+                  "imagePullPolicy":"Always",
+                  "ports":[
+                     {
+                        "name":"ampache-httpd",
+                        "containerPort":80,
+                        "protocol":"TCP"
+                     }
+                  ],
+                  "volumeMounts": [
+                     {
+                        "mountPath":"/media",
+                        "name":"ampache-media",
+                        "readOnly":true
+                     },
+                     {
+                        "mountPath":"/var/lib/mysql",
+                        "name":"ampache-mysql-data"
+                     },
+                     {
+                        "mountPath":"/etc/mysql",
+                        "name":"ampache-mysql-config"
+                     },
+                     {
+                        "mountPath":"/var/www/config",
+                        "name":"ampache-www-config"
+                     }
+                  ],
+                  "livenessProbe": {
+                     "httpGet": {
+                       "path": "/login.php",
+                       "port": 80
+                     },
+                     "initialDelaySeconds": 300,
+                     "timeoutSeconds": 2,
+                     "periodSeconds": 10
+                  } 
+               }
+            ],
+            "volumes":[
+               {
+                 "name":"ampache-media",
+                 "persistentVolumeClaim": {
+                    "claimName":"ampache-media-claim",
+                    "readOnly":true
+                 }
+               },
+               {
+                 "name":"ampache-mysql-data",
+                 "persistentVolumeClaim": {
+                    "claimName":"ampache-mysql-data-claim"
+                 }
+               },
+               {
+                 "name":"ampache-mysql-config",
+                 "persistentVolumeClaim": {
+                    "claimName":"ampache-mysql-config-claim"
+                 }
+               },
+               {
+                 "name":"ampache-www-config",
+                 "persistentVolumeClaim": {
+                    "claimName":"ampache-www-config-claim"
+                 }
+               }
+            ]
+
+         }
+      }
+   }
+}
