@@ -28,4 +28,4 @@ if [ -z $CLAMD_IP ] ; then
 fi
 expand_conf /conf /etc/c-icap
 
-c-icap -N -D -d 2
+c-icap -N -D -d ${DEBUG_LEVEL:-0}
