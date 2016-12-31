@@ -13,6 +13,7 @@ RUN mv /etc/c-icap /etc/c-icap.orig && mkdir /etc/c-icap
 ADD conf /conf
 ADD lib.sh /
 ADD liveness_check.sh /
+RUN mkdir /start.d
 
 ADD icap.sh /
 
