@@ -1,4 +1,4 @@
-docker build --no-cache -t mysquid . 
+docker build -t mysquid . 
 docker stop testsq1 
 docker rm testsq1 
 #ep="-ti --entrypoint=sh"
