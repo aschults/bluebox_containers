@@ -1,19 +1,11 @@
 {
-   "kind":"ReplicationController",
-   "apiVersion":"v1",
+   "kind":"Deployment",
+   "apiVersion":"extensions/v1beta1",
    "metadata":{
-      "name":"simple-squid",
-      "labels":{
-         "app":"web-proxy",
-         "pkg":"squid"
-      }
+      "name":"simple-squid"
    },
    "spec":{
       "replicas":2,
-      "selector":{
-         "app":"web-proxy",
-         "pkg":"squid"
-      },
       "template":{
          "metadata":{
             "labels":{
@@ -29,8 +21,25 @@
                   "imagePullPolicy":"Always",
                   "env":[
                      {
-                         "name":"transparent",
+                         "name":"proxy_auth",
+                         "valueFrom": {
+                           "configMapKeyRef": {
+                             "name": "squidconfig",
+                             "key": "squid.passwd"
+                           }
+                         }
+                     },
+                     {
+                         "name":"secondary_port",
                          "value":"1"
+                     },
+                     {
+                         "name":"icap_req_clamav",
+                         "value":"icap://10.0.10.20:1344/squidclamav bypass=off"
+                     },
+                     {
+                         "name":"icap_resp_clamav",
+                         "value":"icap://10.0.10.20:1344/squidclamav bypass=off"
                      },
                      {
                          "name":"redirect_base",
@@ -38,7 +47,7 @@
                      },
                      {
                          "name":"append_domain",
-                         "value":".schultschik.local"
+                         "value":".schultschik.nowhere"
                      },
                      {
                          "name":"xxxxdns_nameservers",
@@ -57,6 +66,10 @@
                      {
                         "name":"proxy",
                         "containerPort":3128
+                     },
+                     {
+                        "name":"proxy2",
+                        "containerPort":3127
                      }
                   ],
                   "volumeMounts": [

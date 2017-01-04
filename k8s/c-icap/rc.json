@@ -1,0 +1,58 @@
+{
+   "kind":"ReplicationController",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"c-icap",
+      "labels":{
+         "app":"c_icap",
+         "pkg":"c_icap"
+      }
+   },
+   "spec":{
+      "replicas":6,
+      "selector":{
+         "app":"c_icap",
+         "pkg":"c_icap"
+      },
+      "template":{
+         "metadata":{
+            "labels":{
+               "app":"c_icap",
+               "pkg":"c_icap"
+            }
+         },
+         "spec":{
+            "containers":[
+               {
+                  "name":"c-icap",
+                  "image":"aschults/bluebox_squid:c_icap_server_latest",
+                  "imagePullPolicy":"Always",
+                  "env":[
+                     {
+                         "name":"CLAMD_HOST",
+                         "value":"clamd.default.svc.cluster.local"
+                     }
+                  ],
+                  "ports":[
+                     {
+                        "name":"icap",
+                        "containerPort":1344,
+                        "protocol":"TCP"
+                     }
+                  ],
+                  "livenessProbe": {
+                     "exec": {
+                        "command": [
+                           "/bin/sh",   
+                           "/liveness_check.sh"
+                        ]
+                     },
+                     "initialDelaySeconds": 30,
+                     "timeoutSeconds": 2
+                  } 
+               }
+            ]
+         }
+      }
+   }
+}

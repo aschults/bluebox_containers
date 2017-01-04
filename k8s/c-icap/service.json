@@ -1,0 +1,24 @@
+{
+   "kind":"Service",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"c-icap",
+      "labels":{
+         "app":"c-icap"
+      }
+   },
+   "spec":{
+      "ports": [
+         {
+           "port":1344,
+           "protocol":"TCP",
+           "name":"icap"
+         }
+      ],
+      "selector":{
+         "app":"c_icap"
+      },
+      "type": "ClusterIP",
+      "clusterIP":"10.0.10.20"
+   }
+}

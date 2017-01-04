@@ -4,15 +4,22 @@
    "metadata":{
       "name":"web-proxy",
       "labels":{
-         "app":"web-proxy"
+         "app":"web-proxy",
+         "mode":"standard"
       }
    },
    "spec":{
       "sessionAffinity":"ClientIP",
       "ports": [
          {
+           "name":"proxy",
            "port":3128,
            "targetPort":"proxy"
+         },
+         {
+           "name":"proxy2",
+           "port":3127,
+           "targetPort":"proxy2"
          }
       ],
       "selector":{
