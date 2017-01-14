@@ -9,6 +9,8 @@ cachedir=$vardir/cache
 conf_gen=$vardir/conf_generated
 export vardir logdir confdir cachedir etcdir
 
+update-ca-certificates
+
 touch $logdir/cache.log
 chown squid:squid $logdir/cache.log
 
