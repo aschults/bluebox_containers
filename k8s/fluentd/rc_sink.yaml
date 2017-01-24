@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: fluentd-sink
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fluentd-sink
+        pkg: fluentd-sink
+    spec:
+      containers:
+      - env:
+        - name: with_filesystem
+          value: "1"
+        image: aschults/bluebox_fluentd:latest
+        imagePullPolicy: Always
+        name: fluentd-sink
+        ports:
+        - containerPort: 24224
+          name: fluent 
+          protocol: TCP
+        - containerPort: 24224
+          name: fluent-beat
+          protocol: UDP
+        volumeMounts:
+        - mountPath: /fluentd/log_sources
+          name: fluentd-sources
+          readOnly: true
+        - mountPath: /fluentd/log
+          name: fluentd-logs
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: fluentd-sources
+        persistentVolumeClaim:
+          readOnly: true
+          claimName: fluentd-sources-claim
+      - name: fluentd-logs
+        persistentVolumeClaim:
+          claimName: fluentd-logs-claim
+
