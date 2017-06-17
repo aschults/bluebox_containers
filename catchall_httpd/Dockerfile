@@ -1,7 +1,6 @@
 FROM alpine
 #RUN sed -i -e 's/v3\.[0-9][0-9]*/edge/g' /etc/apk/repositories
-RUN apk update
-RUN apk add gettext apache2
+RUN apk update && apk add gettext apache2
 
 RUN mkdir /run/apache2 && chown apache /run/apache2
 RUN mkdir /etc/apache2/start.d

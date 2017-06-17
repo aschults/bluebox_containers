@@ -1,0 +1,32 @@
+{
+   "kind":"Service",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"web-proxy-trans",
+      "labels":{
+         "app":"web-proxy",
+         "mode":"transparent"
+      }
+   },
+   "spec":{
+      "sessionAffinity":"ClientIP",
+      "ports": [
+         {
+           "name":"proxy2",
+           "port":3129,
+           "targetPort":"proxy2",
+           "nodePort":32129
+         },
+         {
+           "name":"proxy3",
+           "port":3130,
+           "targetPort":"proxy3",
+           "nodePort":32130
+         }
+      ],
+      "selector":{
+         "app":"web-proxy"
+      },
+      "type": "NodePort"
+   }
+}

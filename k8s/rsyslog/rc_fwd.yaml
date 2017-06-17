@@ -16,7 +16,7 @@ spec:
           value: tcp:syslog-sink
         - name: with_tcp
           value : "1"
-        - name: rsyslogd_options
+        - name: xxrsyslogd_options
           value: "-d"
         image: aschults/bluebox_rsyslog:latest
         imagePullPolicy: Always

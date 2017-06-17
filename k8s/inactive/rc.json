@@ -1,11 +1,19 @@
 {
-   "kind":"Deployment",
-   "apiVersion":"extensions/v1beta1",
+   "kind":"ReplicationController",
+   "apiVersion":"v1",
    "metadata":{
-      "name":"simple-squid"
+      "name":"simple-squid",
+      "labels":{
+         "app":"web-proxy",
+         "pkg":"squid"
+      }
    },
    "spec":{
       "replicas":2,
+      "selector":{
+         "app":"web-proxy",
+         "pkg":"squid"
+      },
       "template":{
          "metadata":{
             "labels":{
@@ -21,25 +29,8 @@
                   "imagePullPolicy":"Always",
                   "env":[
                      {
-                         "name":"proxy_auth",
-                         "valueFrom": {
-                           "configMapKeyRef": {
-                             "name": "squidconfig",
-                             "key": "squid.passwd"
-                           }
-                         }
-                     },
-                     {
-                         "name":"secondary_port",
+                         "name":"transparent",
                          "value":"1"
-                     },
-                     {
-                         "name":"xicap_req_clamav",
-                         "value":"icap://10.0.10.20:1344/squidclamav bypass=off"
-                     },
-                     {
-                         "name":"xicap_resp_clamav",
-                         "value":"icap://10.0.10.20:1344/squidclamav bypass=off"
                      },
                      {
                          "name":"redirect_base",
@@ -47,7 +38,7 @@
                      },
                      {
                          "name":"append_domain",
-                         "value":".schultschik.nowhere"
+                         "value":".schultschik.local"
                      },
                      {
                          "name":"xxxxdns_nameservers",
@@ -69,10 +60,18 @@
                      },
                      {
                         "name":"proxy2",
-                        "containerPort":3127
+                        "containerPort":3129
+                     },
+                     {
+                        "name":"proxy3",
+                        "containerPort":3130
                      }
                   ],
                   "volumeMounts": [
+                     {
+                        "mountPath":"/var/spool/squid/cache",
+                        "name":"sqdisk-cache"
+                     },
                      {
                         "mountPath":"/var/lib/squidGuard/conf.d",
                         "name":"sqdisk-guard"

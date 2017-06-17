@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: fluentd-fwd
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:

@@ -2,10 +2,10 @@
    "kind":"PersistentVolume",
    "apiVersion":"v1",
    "metadata":{
-      "name":"squid-ssl-disk",
+      "name":"mosquitto-data-disk",
       "labels":{
-         "app":"web-proxy",
-         "pkg":"squid"
+         "app":"mqtt",
+         "pkg":"mosquitto"
       }
    },
    "spec":{
@@ -14,7 +14,7 @@
       },
       "accessModes":["ReadWriteMany"],
       "hostPath":{
-         "path":"/etc/k8s/squid-ssl"
+         "path":"/var/spool/mosquitto-data"
       }
    }
 }
@@ -22,9 +22,9 @@
    "kind":"PersistentVolumeClaim",
    "apiVersion":"v1",
    "metadata":{
-      "name":"squid-disk-claim-ssl",
+      "name":"mosquitto-data-disk-claim",
       "labels":{
-         "pkg":"squid"
+         "pkg":"mosquitto"
       }
    },
    "spec": {
@@ -34,26 +34,26 @@
          }
       },
       "accessModes":["ReadWriteMany"],
-      "volumeName":"squid-ssl-disk"
+      "volumeName":"mosquitto-data-disk"
    }
 }
 {
    "kind":"PersistentVolume",
    "apiVersion":"v1",
    "metadata":{
-      "name":"squid-guard-disk",
+      "name":"mosquitto-conf-disk",
       "labels":{
-         "app":"web-proxy",
-         "pkg":"squid"
+         "app":"mqtt",
+         "pkg":"mosquitto"
       }
    },
    "spec":{
       "capacity":{
-         "storage":"100Mi"
+         "storage":"500Mi"
       },
       "accessModes":["ReadWriteMany"],
       "hostPath":{
-         "path":"/etc/k8s/squidGuard/conf.d"
+         "path":"/etc/k8s/mosquitto"
       }
    }
 }
@@ -61,18 +61,18 @@
    "kind":"PersistentVolumeClaim",
    "apiVersion":"v1",
    "metadata":{
-      "name":"squid-guard-claim",
+      "name":"mosquitto-conf-disk-claim",
       "labels":{
-         "pkg":"squid"
+         "pkg":"mosquitto"
       }
    },
    "spec": {
       "resources":{
          "requests": {
-            "storage":"100Mi"
+            "storage":"500Mi"
          }
       },
       "accessModes":["ReadWriteMany"],
-      "volumeName":"squid-guard-disk"
+      "volumeName":"mosquitto-conf-disk"
    }
 }
