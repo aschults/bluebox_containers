@@ -5,8 +5,8 @@ RUN update-ca-certificates
 
 
 EXPOSE 3128
-RUN mkdir -p /var/spool/squid/cache /var/log/squid ; chown -R squid:squid /var/spool/squid/cache /var/log/squid
-VOLUME ["/var/spool/squid/cache", "/var/log/squid", "/var/spool/squid/ssl"]
+RUN mkdir -p /var/spool/squid/cache /var/log/squid /etc/squid/conf_custom.d ; chown -R squid:squid /var/spool/squid/cache /var/log/squid
+VOLUME ["/var/spool/squid/cache", "/var/log/squid", "/var/spool/squid/ssl", "/etc/squid/conf_custom.d"]
 
 COPY conf /etc/squid/
 ADD squid.sh /

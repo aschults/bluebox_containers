@@ -5,6 +5,7 @@ vardir=$rootdir/var/spool/squid
 logdir=$rootdir/var/log/squid
 etcdir=$rootdir/etc/squid
 confdir=$rootdir/etc/squid/conf.d
+confdir2=$rootdir/etc/squid/conf_custom.d
 cachedir=$vardir/cache
 conf_gen=$vardir/conf_generated
 export vardir logdir confdir cachedir etcdir
@@ -29,6 +30,8 @@ fi
 mkdir -p $conf_gen
 
 expand_conf $confdir $conf_gen
+
+expand_conf $confdir2 $conf_gen
 
 chown -R squid:squid $cachedir
 squid -N -z

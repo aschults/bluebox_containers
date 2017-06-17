@@ -96,12 +96,6 @@
             ],
             "volumes":[
                {
-                 "name":"sqdisk-cache",
-                 "persistentVolumeClaim": {
-                    "claimName":"squid-disk-claim-cache"
-                 }
-               },
-               {
                  "name":"sqdisk-guard",
                  "persistentVolumeClaim": {
                     "claimName":"squid-guard-claim"
