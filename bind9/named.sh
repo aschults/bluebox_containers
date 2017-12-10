@@ -1,5 +1,5 @@
 set -e
-. lib.sh
+. /lib.sh
 
 vardir=$rootdir/var/bind
 logdir=$rootdir/var/log/named
@@ -11,7 +11,7 @@ data_db=$bind_conf_active/db_active_data
 etc_db=$bind_conf_active/db_active
 export vardir logdir etcdir datadir data_db etc_db TTL
 
-. db_gen_lib.sh
+. /db_gen_lib.sh
 
 for f in `ls $etcdir/start.d`  ; do
   fn=$etcdir/start.d/$f
