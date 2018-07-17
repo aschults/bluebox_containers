@@ -12,7 +12,8 @@ COPY conf /etc/squid/
 ADD squid.sh /
 ADD lib.sh /
 
-ADD lighttpd/lighttpd.conf /etc/lighttpd/
+ADD lighttpd/* /etc/lighttpd/
+RUN chmod a+x /etc/lighttpd/ssl.conf
 ADD lighttpd/index.html /var/www/localhost/htdocs
 
 ADD liveness_check.sh /

@@ -1,5 +1,5 @@
 set -e
-. lib.sh
+. /lib.sh
 
 vardir=$rootdir/var/spool/squid
 logdir=$rootdir/var/log/squid
