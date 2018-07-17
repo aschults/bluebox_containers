@@ -6,7 +6,7 @@ mkdir /build
 cd /build
 curl http://www.squidguard.org/Downloads/squidGuard-${SQUIDGUARD_VERSION}.tar.gz | tar -xvzf -
 cd squidGuard-${SQUIDGUARD_VERSION}
-curl "http://bugs.squid-cache.org/attachment.cgi?id=2988" | patch -p1
+curl "https://bugs.squid-cache.org/attachment.cgi?id=2988" | patch -p1
 cat <<EOF | patch -p1
 diff -ruN squidGuard-1.4-vanilla/src/sgDb.c squidGuard-1.4/src/sgDb.c
 --- squidGuard-1.4-vanilla/src/sgDb.c   2008-07-15 04:29:41.000000000 +1000
